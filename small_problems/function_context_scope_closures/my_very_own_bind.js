@@ -1,0 +1,30 @@
+// Function.prototype.bind is a method on all function objects that allows us to
+// hard-bind a function to a particular object. The way this works is that you
+// pass a context object to the bind method and it returns a new function that
+// is essentially the same function but hard-bound to the context object
+// supplied.
+
+// Create a function myBind, that accepts two arguments: 1) The function to
+// bind, 2) The context object, and returns a new function that's hard-bound to
+// the passed in context object.
+
+function myBind(func, context) {
+  return function(...args) {
+    return func.apply(context, args);
+  };
+}
+
+const foo = {
+  count: 1,
+  bar(num) {
+    console.log(this.count + num);
+  },
+};
+
+foo.bar(5); // 6
+
+let baz = foo.bar; // context loss by removing method from object
+baz(5); // 'NaN'
+
+qux = myBind(baz, foo);
+qux(5); // 6
